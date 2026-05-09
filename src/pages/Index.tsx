@@ -102,7 +102,7 @@ const Index = () => {
 
       <footer className="border-t border-border/60">
         <div className="container flex flex-col items-center justify-between gap-4 py-8 text-xs text-muted-foreground md:flex-row">
-          <p>© 2026 NOVA/LAB. A demo storefront.</p>
+          <p>© 2026 Animazic Gadgets. A demo storefront.</p>
           <p>Designed in California. Made on Earth.</p>
         </div>
       </footer>

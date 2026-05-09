@@ -30,7 +30,7 @@ const AdminLogin = () => {
             <ShieldCheck className="h-6 w-6" />
           </div>
           <h1 className="mt-4 font-display text-2xl font-semibold">Admin sign-in</h1>
-          <p className="mt-1 text-sm text-muted-foreground">NOVA/LAB control room</p>
+          <p className="mt-1 text-sm text-muted-foreground">Animazic Gadgets control room</p>
         </div>
 
         <form onSubmit={onSubmit} className="space-y-4">

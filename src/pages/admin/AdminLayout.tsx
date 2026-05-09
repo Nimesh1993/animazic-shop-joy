@@ -34,7 +34,7 @@ const AdminLayout = () => {
         <Sidebar collapsible="icon" className="border-r border-border/60">
           <SidebarHeader className="px-4 py-4">
             <p className="font-display text-base font-semibold">
-              NOVA<span className="text-primary">/</span>ADMIN
+              Anima<span className="text-primary">zic</span>
             </p>
           </SidebarHeader>
           <SidebarContent>
