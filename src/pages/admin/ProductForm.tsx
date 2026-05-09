@@ -166,7 +166,7 @@ const ProductForm = () => {
                 rows={4}
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
-                placeholder="A titanium unibody, 6.7\" LTPO display..."
+                placeholder={'A titanium unibody, 6.7" LTPO display...'}
               />
             </Field>
             <Field label="Highlights (one per line)" className="md:col-span-2">
@@ -174,7 +174,7 @@ const ProductForm = () => {
                 rows={4}
                 value={highlights}
                 onChange={(e) => setHighlights(e.target.value)}
-                placeholder={"Grade-5 titanium frame\n6.7\" 120Hz LTPO ProMotion"}
+                placeholder={'Grade-5 titanium frame\n6.7" 120Hz LTPO ProMotion'}
               />
             </Field>
             <div className="flex items-center gap-3 md:col-span-2">
