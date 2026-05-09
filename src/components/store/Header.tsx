@@ -11,7 +11,7 @@ const Header = () => {
     <header className="fixed inset-x-0 top-0 z-40 border-b border-border/40 bg-background/70 backdrop-blur-xl">
       <div className="container flex h-16 items-center justify-between">
         <Link to="/" className="font-display text-lg font-semibold tracking-tight">
-          NOVA<span className="text-primary">/</span>LAB
+          Anima<span className="text-primary">zic</span>
         </Link>
         <nav className="hidden gap-8 text-sm text-muted-foreground md:flex">
           <Link to="/" className="transition hover:text-foreground">Shop</Link>
