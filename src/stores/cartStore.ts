@@ -20,18 +20,28 @@ export interface CartItem {
   selectedOptions: Array<{ name: string; value: string }>;
 }
 
+export interface LastOrder {
+  items: CartItem[];
+  total: number;
+  currencyCode: string;
+  checkoutUrl: string | null;
+  placedAt: string;
+}
+
 interface CartStore {
   items: CartItem[];
   cartId: string | null;
   checkoutUrl: string | null;
   isLoading: boolean;
   isSyncing: boolean;
+  lastOrder: LastOrder | null;
   addItem: (item: Omit<CartItem, "lineId">) => Promise<void>;
   updateQuantity: (variantId: string, quantity: number) => Promise<void>;
   removeItem: (variantId: string) => Promise<void>;
   clearCart: () => void;
   syncCart: () => Promise<void>;
   getCheckoutUrl: () => string | null;
+  beginCheckout: () => string | null;
 }
 
 export const useCartStore = create<CartStore>()(
@@ -42,6 +52,7 @@ export const useCartStore = create<CartStore>()(
       checkoutUrl: null,
       isLoading: false,
       isSyncing: false,
+      lastOrder: null,
 
       addItem: async (item) => {
         const { items, cartId, clearCart } = get();
@@ -123,6 +134,23 @@ export const useCartStore = create<CartStore>()(
       clearCart: () => set({ items: [], cartId: null, checkoutUrl: null }),
       getCheckoutUrl: () => get().checkoutUrl,
 
+      beginCheckout: () => {
+        const { items, checkoutUrl } = get();
+        if (items.length === 0 || !checkoutUrl) return null;
+        const currencyCode = items[0]?.price.currencyCode || "USD";
+        const total = items.reduce((s, i) => s + parseFloat(i.price.amount) * i.quantity, 0);
+        set({
+          lastOrder: {
+            items: items.map((i) => ({ ...i })),
+            total,
+            currencyCode,
+            checkoutUrl,
+            placedAt: new Date().toISOString(),
+          },
+        });
+        return checkoutUrl;
+      },
+
       syncCart: async () => {
         const { cartId, isSyncing, clearCart } = get();
         if (!cartId || isSyncing) return;
@@ -142,7 +170,12 @@ export const useCartStore = create<CartStore>()(
     {
       name: "animazic-cart",
       storage: createJSONStorage(() => localStorage),
-      partialize: (state) => ({ items: state.items, cartId: state.cartId, checkoutUrl: state.checkoutUrl }),
+      partialize: (state) => ({
+        items: state.items,
+        cartId: state.cartId,
+        checkoutUrl: state.checkoutUrl,
+        lastOrder: state.lastOrder,
+      }),
     },
   ),
 );
