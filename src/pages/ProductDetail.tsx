@@ -4,13 +4,14 @@ import { ArrowLeft, Check, ShieldCheck, ShoppingBag } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
-import { getProduct, WARRANTY_PRICE } from "@/data/products";
+import { WARRANTY_PRICE } from "@/data/products";
+import { useProductStore } from "@/stores/productStore";
 import { useCartStore } from "@/stores/cartStore";
 import CompareButton from "@/components/store/CompareButton";
 
 const ProductDetail = () => {
   const { slug = "" } = useParams();
-  const product = getProduct(slug);
+  const product = useProductStore((s) => s.getBySlug(slug));
   const [warranty, setWarranty] = useState(false);
   const addItem = useCartStore((s) => s.addItem);
 

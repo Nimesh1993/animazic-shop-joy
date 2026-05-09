@@ -1,12 +1,21 @@
 import { Link } from "react-router-dom";
 import { ArrowRight, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { products, flagship } from "@/data/products";
 import ProductCard from "@/components/store/ProductCard";
+import { useProductStore } from "@/stores/productStore";
 
 const Index = () => {
-  const hero = flagship();
-  const others = products.filter((p) => p.id !== hero.id);
+  const products = useProductStore((s) => s.items);
+  const hero = products.find((p) => p.flagship) ?? products[0];
+  const others = hero ? products.filter((p) => p.id !== hero.id) : products;
+
+  if (!hero) {
+    return (
+      <main className="min-h-screen bg-background pt-32 text-center text-muted-foreground">
+        No products yet. Visit /admin to add some.
+      </main>
+    );
+  }
 
   return (
     <main className="min-h-screen bg-background pt-16 text-foreground">
