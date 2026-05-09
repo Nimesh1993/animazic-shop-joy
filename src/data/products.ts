@@ -11,6 +11,16 @@ export interface Product {
   gallery?: string[];
   hero?: boolean;
   flagship?: boolean;
+  specs: ProductSpecs;
+}
+
+export interface ProductSpecs {
+  battery: string;
+  weight: string;
+  processor: string;
+  display: string;
+  connectivity: string;
+  warranty: string;
 }
 
 export const products: Product[] = [
@@ -33,6 +43,14 @@ export const products: Product[] = [
       "https://images.unsplash.com/photo-1592750475338-74b7b21085ab?auto=format&fit=crop&w=1600&q=80",
     flagship: true,
     hero: true,
+    specs: {
+      battery: "Up to 28 hrs video",
+      weight: "187 g",
+      processor: "Nova A18 Bionic, 3nm",
+      display: "6.7\" LTPO OLED · 120Hz · 2000 nits",
+      connectivity: "5G · Wi-Fi 7 · USB-C 3.2",
+      warranty: "2 years included",
+    },
   },
   {
     id: "p2",
@@ -52,6 +70,14 @@ export const products: Product[] = [
     image:
       "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=1600&q=80",
     hero: true,
+    specs: {
+      battery: "40 hrs (ANC on)",
+      weight: "248 g",
+      processor: "EchoSilence DSP",
+      display: "—",
+      connectivity: "Bluetooth 5.4 · USB-C lossless",
+      warranty: "2 years included",
+    },
   },
   {
     id: "p3",
@@ -71,6 +97,14 @@ export const products: Product[] = [
     image:
       "https://images.unsplash.com/photo-1611652022419-a9419f74343d?auto=format&fit=crop&w=1600&q=80",
     hero: true,
+    specs: {
+      battery: "7 days typical",
+      weight: "3.6 g",
+      processor: "Halo Bio-Sense SoC",
+      display: "—",
+      connectivity: "Bluetooth 5.3 · NFC",
+      warranty: "1 year included",
+    },
   },
   {
     id: "p4",
@@ -90,6 +124,14 @@ export const products: Product[] = [
     image:
       "https://images.unsplash.com/photo-1626379953822-baec19c3accd?auto=format&fit=crop&w=1600&q=80",
     hero: true,
+    specs: {
+      battery: "3 hrs internal",
+      weight: "1.1 kg",
+      processor: "LumenVision X2",
+      display: "4K triple-laser · up to 120\"",
+      connectivity: "Wi-Fi 6 · HDMI 2.1 · USB-C",
+      warranty: "2 years included",
+    },
   },
 ];
 
