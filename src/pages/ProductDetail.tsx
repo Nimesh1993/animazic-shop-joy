@@ -6,6 +6,7 @@ import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import { getProduct, WARRANTY_PRICE } from "@/data/products";
 import { useCartStore } from "@/stores/cartStore";
+import CompareButton from "@/components/store/CompareButton";
 
 const ProductDetail = () => {
   const { slug = "" } = useParams();
@@ -57,6 +58,10 @@ const ProductDetail = () => {
             {product.name}
           </h1>
           <p className="mt-3 text-lg text-muted-foreground">{product.tagline}</p>
+
+          <div className="mt-6">
+            <CompareButton product={product} variant="pill" />
+          </div>
 
           <p className="mt-8 text-base leading-relaxed text-foreground/90">
             {product.description}

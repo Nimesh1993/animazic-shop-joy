@@ -8,8 +8,10 @@ import NotFound from "./pages/NotFound.tsx";
 import ProductDetail from "./pages/ProductDetail.tsx";
 import Checkout from "./pages/Checkout.tsx";
 import OrderConfirmed from "./pages/OrderConfirmed.tsx";
+import Compare from "./pages/Compare.tsx";
 import Header from "./components/store/Header";
 import CartDrawer from "./components/store/CartDrawer";
+import CompareTray from "./components/store/CompareTray";
 
 const queryClient = new QueryClient();
 
@@ -21,9 +23,11 @@ const App = () => (
       <BrowserRouter>
         <Header />
         <CartDrawer />
+        <CompareTray />
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/product/:slug" element={<ProductDetail />} />
+          <Route path="/compare" element={<Compare />} />
           <Route path="/checkout" element={<Checkout />} />
           <Route path="/order-confirmed" element={<OrderConfirmed />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
