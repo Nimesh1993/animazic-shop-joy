@@ -12,6 +12,11 @@ import Compare from "./pages/Compare.tsx";
 import Header from "./components/store/Header";
 import CartDrawer from "./components/store/CartDrawer";
 import CompareTray from "./components/store/CompareTray";
+import AdminLogin from "./pages/admin/AdminLogin";
+import AdminLayout from "./pages/admin/AdminLayout";
+import AdminDashboard from "./pages/admin/AdminDashboard";
+import ProductForm from "./pages/admin/ProductForm";
+import RequireAdmin from "./components/admin/RequireAdmin";
 
 const queryClient = new QueryClient();
 
@@ -30,6 +35,20 @@ const App = () => (
           <Route path="/compare" element={<Compare />} />
           <Route path="/checkout" element={<Checkout />} />
           <Route path="/order-confirmed" element={<OrderConfirmed />} />
+          <Route path="/admin/login" element={<AdminLogin />} />
+          <Route
+            path="/admin"
+            element={
+              <RequireAdmin>
+                <AdminLayout />
+              </RequireAdmin>
+            }
+          >
+            <Route index element={<AdminDashboard />} />
+            <Route path="products" element={<AdminDashboard />} />
+            <Route path="products/new" element={<ProductForm />} />
+            <Route path="products/:id/edit" element={<ProductForm />} />
+          </Route>
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
