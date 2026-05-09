@@ -74,10 +74,22 @@ export default {
         card: "var(--shadow-card)",
       },
       fontFamily: {
-        display: ["'Playfair Display'", "Georgia", "serif"],
+        display: ["'Space Grotesk'", "'Inter'", "system-ui", "sans-serif"],
         sans: ["'Inter'", "system-ui", "sans-serif"],
       },
       keyframes: {
+        "fade-in": {
+          "0%": { opacity: "0", transform: "translateY(20px)" },
+          "100%": { opacity: "1", transform: "translateY(0)" },
+        },
+        "fade-in-slow": {
+          "0%": { opacity: "0" },
+          "100%": { opacity: "1" },
+        },
+        "scale-in": {
+          "0%": { opacity: "0", transform: "scale(0.96)" },
+          "100%": { opacity: "1", transform: "scale(1)" },
+        },
         "accordion-down": {
           from: {
             height: "0",
@@ -96,6 +108,9 @@ export default {
         },
       },
       animation: {
+        "fade-in": "fade-in 0.8s cubic-bezier(0.16, 1, 0.3, 1) both",
+        "fade-in-slow": "fade-in-slow 1.4s ease-out both",
+        "scale-in": "scale-in 0.6s cubic-bezier(0.16, 1, 0.3, 1) both",
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
       },

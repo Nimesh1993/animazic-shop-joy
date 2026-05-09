@@ -8,44 +8,45 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
-    /* Animazic — bold blue editorial */
-    --background: 40 30% 97%;
-    --foreground: 220 60% 8%;
+    /* Boutique premium — dark charcoal + neon cyan */
+    --background: 0 0% 4%;
+    --foreground: 0 0% 98%;
 
-    --card: 0 0% 100%;
-    --card-foreground: 220 60% 8%;
+    --card: 0 0% 7%;
+    --card-foreground: 0 0% 98%;
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 220 60% 8%;
+    --popover: 0 0% 6%;
+    --popover-foreground: 0 0% 98%;
 
-    --primary: 220 75% 38%;
-    --primary-foreground: 210 60% 98%;
+    --primary: 184 100% 50%;
+    --primary-foreground: 0 0% 4%;
 
-    --primary-deep: 222 80% 22%;
-    --primary-glow: 215 90% 60%;
-    --ice: 210 90% 92%;
+    --primary-deep: 184 100% 38%;
+    --primary-glow: 184 100% 65%;
+    --ice: 184 60% 90%;
 
-    --secondary: 210 60% 94%;
-    --secondary-foreground: 222 80% 22%;
+    --secondary: 0 0% 12%;
+    --secondary-foreground: 0 0% 98%;
 
-    --muted: 210 30% 94%;
-    --muted-foreground: 220 15% 40%;
+    --muted: 0 0% 10%;
+    --muted-foreground: 0 0% 62%;
 
-    --accent: 215 90% 55%;
-    --accent-foreground: 0 0% 100%;
+    --accent: 184 100% 50%;
+    --accent-foreground: 0 0% 4%;
 
-    --destructive: 0 75% 50%;
+    --destructive: 0 75% 55%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 220 25% 88%;
-    --input: 220 25% 88%;
-    --ring: 220 75% 38%;
+    --border: 0 0% 14%;
+    --input: 0 0% 14%;
+    --ring: 184 100% 50%;
 
     --radius: 0.75rem;
 
-    --gradient-hero: linear-gradient(135deg, hsl(222 80% 22%) 0%, hsl(220 75% 38%) 60%, hsl(215 90% 55%) 100%);
-    --shadow-elegant: 0 30px 60px -30px hsl(222 80% 22% / 0.45);
-    --shadow-card: 0 10px 30px -15px hsl(222 80% 22% / 0.2);
+    --gradient-hero: radial-gradient(ellipse at top, hsl(184 100% 50% / 0.18) 0%, hsl(0 0% 4%) 60%);
+    --shadow-elegant: 0 30px 80px -20px hsl(184 100% 50% / 0.25);
+    --shadow-card: 0 10px 40px -15px hsl(0 0% 0% / 0.6);
+    --shadow-glow: 0 0 40px hsl(184 100% 50% / 0.35);
     --transition-smooth: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 
     --sidebar-background: 0 0% 98%;
@@ -112,10 +113,12 @@ All colors MUST be HSL.
   body {
     @apply bg-background text-foreground font-sans antialiased;
     font-family: 'Inter', system-ui, sans-serif;
+    font-feature-settings: "ss01", "cv11";
   }
 
   h1, h2, h3, h4, .font-display {
-    font-family: 'Playfair Display', Georgia, serif;
-    letter-spacing: -0.02em;
+    font-family: 'Space Grotesk', 'Inter', system-ui, sans-serif;
+    letter-spacing: -0.03em;
+    font-weight: 600;
   }
 }
