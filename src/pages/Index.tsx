@@ -9,10 +9,12 @@ const Index = () => {
   const products = useProductStore((s) => s.items);
   const loading = useProductStore((s) => s.loading);
   const loadFromSupabase = useProductStore((s) => s.loadFromSupabase);
+  const subscribeToSupabase = useProductStore((s) => s.subscribeToSupabase);
 
   useEffect(() => {
     loadFromSupabase();
-  }, [loadFromSupabase]);
+    return subscribeToSupabase();
+  }, [loadFromSupabase, subscribeToSupabase]);
   const hero = products.find((p) => p.flagship) ?? products[0];
   const others = hero ? products.filter((p) => p.id !== hero.id) : products;
 
