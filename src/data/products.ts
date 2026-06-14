@@ -122,6 +122,12 @@ export interface SupabaseProductRow {
   warranty_months: number;
   return_window_days: number;
   flagged_for_admin: boolean;
+  shopify_product_id: string | null;
+  shopify_variant_id: string | null;
+  shopify_inventory_item_id: string | null;
+  shopify_sync_status: "created" | "updated" | "failed" | null;
+  shopify_last_synced_at: string | null;
+  shopify_error: string | null;
 }
 
 const slugify = (value: string) =>
@@ -159,14 +165,19 @@ export const mapSupabaseProduct = (row: SupabaseProductRow): Product => {
       connectivity: String(specs.Bluetooth ?? specs.connectivity ?? "See product details"),
       warranty: `${row.warranty_months} months included`,
     },
+    shopifyProductId: row.shopify_product_id,
+    shopifyVariantId: row.shopify_variant_id,
+    shopifyInventoryItemId: row.shopify_inventory_item_id,
+    shopifySyncStatus: row.shopify_sync_status,
+    shopifyLastSyncedAt: row.shopify_last_synced_at,
+    shopifyError: row.shopify_error,
   };
 };
-
 export async function fetchSupabaseProducts(): Promise<Product[]> {
   const { data, error } = await automationSupabase
     .from("products")
     .select(
-      "sku,name,category,brand,description,final_price,star_rating,media_urls,specs,warranty_months,return_window_days,flagged_for_admin",
+      "sku,name,category,brand,description,final_price,star_rating,media_urls,specs,warranty_months,return_window_days,flagged_for_admin,shopify_product_id,shopify_variant_id,shopify_inventory_item_id,shopify_sync_status,shopify_last_synced_at,shopify_error",
     )
     .eq("flagged_for_admin", false)
     .order("star_rating", { ascending: false });
