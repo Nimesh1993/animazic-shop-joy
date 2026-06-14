@@ -16,6 +16,12 @@ export interface Product {
   hero?: boolean;
   flagship?: boolean;
   specs: ProductSpecs;
+  shopifyProductId?: string | null;
+  shopifyVariantId?: string | null;
+  shopifyInventoryItemId?: string | null;
+  shopifySyncStatus?: "created" | "updated" | "failed" | null;
+  shopifyLastSyncedAt?: string | null;
+  shopifyError?: string | null;
 }
 
 export interface ProductSpecs {
