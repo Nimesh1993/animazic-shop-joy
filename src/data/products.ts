@@ -1,5 +1,7 @@
 import { automationSupabase } from "@/integrations/supabase/automationClient";
 
+export const WARRANTY_PRICE = 49;
+
 export interface Product {
   id: string;
   slug: string;
