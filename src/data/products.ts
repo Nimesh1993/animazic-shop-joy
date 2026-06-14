@@ -196,7 +196,12 @@ export const fetchSupabaseProducts = async (): Promise<Product[]> => {
     .order("star_rating", { ascending: false });
 
   if (error) {
-    console.error("Failed to fetch Supabase products", error);
+    console.error("Failed to fetch Supabase products");
+    console.error("  URL:", import.meta.env.VITE_SUPABASE_URL);
+    console.error("  message:", error.message);
+    console.error("  code:", error.code);
+    console.error("  details:", error.details);
+    console.error("  hint:", error.hint);
     return products;
   }
 
