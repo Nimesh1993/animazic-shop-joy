@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { ArrowLeft, Check, ShieldCheck, ShoppingBag } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -12,19 +12,32 @@ import CompareButton from "@/components/store/CompareButton";
 const ProductDetail = () => {
   const { slug = "" } = useParams();
   const product = useProductStore((s) => s.getBySlug(slug));
+  const loading = useProductStore((s) => s.loading);
+  const loadFromSupabase = useProductStore((s) => s.loadFromSupabase);
   const [warranty, setWarranty] = useState(false);
   const addItem = useCartStore((s) => s.addItem);
 
-  const total = useMemo(
-    () => (product ? product.price + (warranty ? WARRANTY_PRICE : 0) : 0),
-    [product, warranty],
-  );
+  useEffect(() => {
+    loadFromSupabase();
+  }, [loadFromSupabase]);
+
+  const total = useMemo(() => (product ? product.price + (warranty ? WARRANTY_PRICE : 0) : 0), [product, warranty]);
+
+  if (loading) {
+    return (
+      <main className="container min-h-screen pt-32">
+        <p className="text-muted-foreground">Loading product...</p>
+      </main>
+    );
+  }
 
   if (!product) {
     return (
       <main className="container min-h-screen pt-32">
         <p className="text-muted-foreground">Product not found.</p>
-        <Link to="/" className="text-primary underline">Back home</Link>
+        <Link to="/" className="text-primary underline">
+          Back home
+        </Link>
       </main>
     );
   }
@@ -44,11 +57,7 @@ const ProductDetail = () => {
         {/* Sticky image */}
         <div className="md:sticky md:top-24 md:self-start">
           <div className="relative overflow-hidden rounded-3xl border border-border/60 bg-card">
-            <img
-              src={product.image}
-              alt={product.name}
-              className="aspect-[4/5] w-full object-cover"
-            />
+            <img src={product.image} alt={product.name} className="aspect-[4/5] w-full object-cover" />
           </div>
         </div>
 
@@ -64,9 +73,7 @@ const ProductDetail = () => {
             <CompareButton product={product} variant="pill" />
           </div>
 
-          <p className="mt-8 text-base leading-relaxed text-foreground/90">
-            {product.description}
-          </p>
+          <p className="mt-8 text-base leading-relaxed text-foreground/90">{product.description}</p>
 
           <ul className="mt-8 space-y-3">
             {product.highlights.map((h) => (
@@ -104,9 +111,7 @@ const ProductDetail = () => {
           <div className="mt-8 flex items-end justify-between gap-6">
             <div>
               <p className="text-xs uppercase tracking-widest text-muted-foreground">Total</p>
-              <p className="font-display text-4xl font-semibold tracking-tight">
-                ${total.toLocaleString()}
-              </p>
+              <p className="font-display text-4xl font-semibold tracking-tight">${total.toLocaleString()}</p>
             </div>
             <Button
               size="lg"
@@ -117,9 +122,7 @@ const ProductDetail = () => {
             </Button>
           </div>
 
-          <p className="mt-4 text-xs text-muted-foreground">
-            Free express shipping over $500 · 30-day returns
-          </p>
+          <p className="mt-4 text-xs text-muted-foreground">Free express shipping over $500 · 30-day returns</p>
         </div>
       </div>
     </main>
