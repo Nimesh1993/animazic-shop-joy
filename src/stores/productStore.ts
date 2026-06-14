@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
+import { automationSupabase } from "@/integrations/supabase/automationClient";
 import { fetchSupabaseProducts, products as seed, Product } from "@/data/products";
-
 export interface AdminProduct extends Product {
   stock: number;
 }
@@ -18,6 +18,7 @@ interface ProductStoreState {
   reset: () => void;
   loading: boolean;
   loadFromSupabase: () => Promise<void>;
+  subscribeToSupabase: () => () => void;
 }
 
 const slugify = (s: string) =>
@@ -32,6 +33,26 @@ export const useProductStore = create<ProductStoreState>()(
     (set, get) => ({
       items: seeded,
       loading: false,
+      subscribeToSupabase: () => {
+        const channel = automationSupabase
+          .channel("products-realtime")
+          .on(
+            "postgres_changes",
+            {
+              event: "*",
+              schema: "public",
+              table: "products",
+            },
+            () => {
+              get().loadFromSupabase();
+            },
+          )
+          .subscribe();
+
+        return () => {
+          automationSupabase.removeChannel(channel);
+        };
+      },
       loadFromSupabase: async () => {
         set({ loading: true });
         try {
