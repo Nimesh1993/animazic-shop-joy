@@ -16,6 +16,14 @@ const Index = () => {
   const hero = products.find((p) => p.flagship) ?? products[0];
   const others = hero ? products.filter((p) => p.id !== hero.id) : products;
 
+  if (loading) {
+    return (
+      <main className="min-h-screen bg-background pt-24 text-foreground">
+        <div className="container py-12 text-muted-foreground">Loading products...</div>
+      </main>
+    );
+  }
+
   if (!hero) {
     return (
       <main className="min-h-screen bg-background pt-32 text-center text-muted-foreground">
