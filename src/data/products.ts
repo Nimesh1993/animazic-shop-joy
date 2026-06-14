@@ -98,3 +98,11 @@ export const products: Product[] = [
     hero: true,
     specs: {
       battery: "7 days typical",
+      weight: "4 g",
+      processor: "Halo H1",
+      display: "—",
+      connectivity: "Bluetooth 5.3",
+      warranty: "1 year included",
+    },
+  },
+];
