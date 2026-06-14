@@ -1,5 +1,7 @@
 import { automationSupabase } from "@/integrations/supabase/automationClient";
 
+export const WARRANTY_PRICE = 49;
+
 export interface Product {
   id: string;
   slug: string;
@@ -98,3 +100,17 @@ export const products: Product[] = [
     hero: true,
     specs: {
       battery: "7 days typical",
+      weight: "4 g",
+      processor: "Halo H1",
+      display: "—",
+      connectivity: "Bluetooth 5.3",
+      warranty: "1 year included",
+    },
+  },
+];
+
+export async function fetchSupabaseProducts(): Promise<Product[]> {
+  const { data, error } = await automationSupabase.from("products").select("*");
+  if (error) throw error;
+  return (data ?? []) as unknown as Product[];
+}
