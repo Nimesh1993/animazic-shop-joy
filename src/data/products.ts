@@ -108,3 +108,9 @@ export const products: Product[] = [
     },
   },
 ];
+
+export async function fetchSupabaseProducts(): Promise<Product[]> {
+  const { data, error } = await automationSupabase.from("products").select("*");
+  if (error) throw error;
+  return (data ?? []) as unknown as Product[];
+}
