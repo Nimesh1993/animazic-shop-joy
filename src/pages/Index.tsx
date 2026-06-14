@@ -3,9 +3,16 @@ import { ArrowRight, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import ProductCard from "@/components/store/ProductCard";
 import { useProductStore } from "@/stores/productStore";
+import { useEffect } from "react";
 
 const Index = () => {
   const products = useProductStore((s) => s.items);
+  const loading = useProductStore((s) => s.loading);
+  const loadFromSupabase = useProductStore((s) => s.loadFromSupabase);
+
+  useEffect(() => {
+    loadFromSupabase();
+  }, [loadFromSupabase]);
   const hero = products.find((p) => p.flagship) ?? products[0];
   const others = hero ? products.filter((p) => p.id !== hero.id) : products;
 
@@ -35,9 +42,7 @@ const Index = () => {
               <br />
               <span className="text-muted-foreground">{hero.tagline}</span>
             </h1>
-            <p className="mt-6 max-w-md text-base leading-relaxed text-muted-foreground">
-              {hero.description}
-            </p>
+            <p className="mt-6 max-w-md text-base leading-relaxed text-muted-foreground">{hero.description}</p>
             <div className="mt-8 flex flex-wrap gap-3">
               <Button asChild size="lg" className="rounded-full">
                 <Link to={`/product/${hero.slug}`}>
@@ -53,11 +58,7 @@ const Index = () => {
           <div className="relative animate-scale-in">
             <div className="absolute -inset-8 rounded-[3rem] bg-primary/10 blur-3xl" />
             <div className="relative overflow-hidden rounded-3xl border border-border/60 bg-card shadow-elegant">
-              <img
-                src={hero.image}
-                alt={hero.name}
-                className="aspect-[4/5] w-full object-cover"
-              />
+              <img src={hero.image} alt={hero.name} className="aspect-[4/5] w-full object-cover" />
             </div>
           </div>
         </div>
@@ -88,9 +89,18 @@ const Index = () => {
       <section id="story" className="border-t border-border/60 bg-secondary/30">
         <div className="container grid gap-10 py-20 md:grid-cols-3">
           {[
-            { t: "Engineered, not assembled", d: "Every component, every screw, every line of firmware — designed in-house." },
-            { t: "Quietly excessive", d: "We over-spec materials and under-spec marketing. The product does the talking." },
-            { t: "Built to outlast", d: "Two-year warranty standard. Repairable. Software supported for at least seven years." },
+            {
+              t: "Engineered, not assembled",
+              d: "Every component, every screw, every line of firmware — designed in-house.",
+            },
+            {
+              t: "Quietly excessive",
+              d: "We over-spec materials and under-spec marketing. The product does the talking.",
+            },
+            {
+              t: "Built to outlast",
+              d: "Two-year warranty standard. Repairable. Software supported for at least seven years.",
+            },
           ].map((b) => (
             <div key={b.t}>
               <h3 className="font-display text-xl font-semibold">{b.t}</h3>
