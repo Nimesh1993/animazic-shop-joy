@@ -187,7 +187,7 @@ export const mapSupabaseProduct = (row: SupabaseProductRow): Product => {
 };
 
 export const fetchSupabaseProducts = async (): Promise<Product[]> => {
-  const { data, error } = await supabase
+  const { data, error } = await (supabase as any)
     .from("products")
     .select(
       "sku,name,category,brand,description,final_price,star_rating,media_urls,specs,warranty_months,return_window_days,flagged_for_admin",
