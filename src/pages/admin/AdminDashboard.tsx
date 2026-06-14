@@ -4,6 +4,13 @@ import { automationSupabase } from "@/integrations/supabase/automationClient";
 import { useProductStore } from "@/stores/productStore";
 import { toast } from "@/hooks/use-toast";
 
+const getPublishLabel = (product: { approvedForShopify?: boolean | null; shopifyPublishStatus?: string | null }) => {
+  if (product.shopifyPublishStatus === "published") return "published";
+  if (product.shopifyPublishStatus === "failed") return "publish failed";
+  if (product.approvedForShopify) return "approved draft";
+  return "needs approval";
+};
+
 const AdminDashboard = () => {
   const items = useProductStore((s) => s.items);
   const loadFromSupabase = useProductStore((s) => s.loadFromSupabase);
@@ -36,11 +43,16 @@ const AdminDashboard = () => {
 
   const totalUnits = items.reduce((sum, product) => sum + product.stock, 0);
   const syncedCount = items.filter((product) => product.shopifyProductId).length;
-  const approvedCount = items.filter((product) => product.approvedForShopify).length;
+  const approvedDraftCount = items.filter(
+    (product) => product.approvedForShopify && product.shopifyPublishStatus !== "published",
+  ).length;
+  const publishedCount = items.filter((product) => product.shopifyPublishStatus === "published").length;
+  const failedCount = items.filter((product) => product.shopifyPublishStatus === "failed").length;
 
   return React.createElement(
     "main",
     { className: "space-y-8 animate-fade-in" },
+
     React.createElement(
       "section",
       { className: "flex flex-wrap items-end justify-between gap-4" },
@@ -56,12 +68,15 @@ const AdminDashboard = () => {
         React.createElement(
           "p",
           { className: "mt-1 text-sm text-muted-foreground" },
-          "Manage products, stock, Shopify sync, and approval status.",
+          "Manage products, stock, Shopify sync, approval, and publish status.",
         ),
       ),
       React.createElement(
         Link,
-        { to: "/admin/products/new", className: "rounded-full bg-primary px-4 py-2 text-sm text-primary-foreground" },
+        {
+          to: "/admin/products/new",
+          className: "rounded-full bg-primary px-4 py-2 text-sm text-primary-foreground",
+        },
         "Add new product",
       ),
     ),
@@ -82,7 +97,7 @@ const AdminDashboard = () => {
       React.createElement(
         "div",
         { className: "rounded-2xl border border-border/60 bg-card p-5" },
-        `Shopify ready: ${approvedCount}/${items.length} approved, ${syncedCount} synced`,
+        `Shopify: ${syncedCount} synced, ${approvedDraftCount} approved draft, ${publishedCount} published, ${failedCount} failed`,
       ),
     ),
 
@@ -115,11 +130,14 @@ const AdminDashboard = () => {
                 "div",
                 { className: "space-y-1 text-xs" },
                 React.createElement("p", null, `Sync: ${product.shopifySyncStatus ?? "not synced"}`),
-                React.createElement(
-                  "p",
-                  null,
-                  `Approval: ${product.approvedForShopify ? "approved" : "needs approval"}`,
-                ),
+                React.createElement("p", null, `Approval: ${getPublishLabel(product)}`),
+                product.shopifyPublishedAt
+                  ? React.createElement(
+                      "p",
+                      null,
+                      `Published: ${new Date(product.shopifyPublishedAt).toLocaleString()}`,
+                    )
+                  : null,
               ),
               React.createElement(
                 "div",
@@ -136,7 +154,10 @@ const AdminDashboard = () => {
                   : null,
                 React.createElement(
                   Link,
-                  { to: `/admin/products/${product.id}/edit`, className: "rounded-md border px-3 py-2 text-sm" },
+                  {
+                    to: `/admin/products/${product.id}/edit`,
+                    className: "rounded-md border px-3 py-2 text-sm",
+                  },
                   "Edit",
                 ),
                 React.createElement(
