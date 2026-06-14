@@ -18,8 +18,8 @@ import { toast } from "@/hooks/use-toast";
 
 const stockBadge = (stock: number) => {
   if (stock <= 0) return { label: "Out of stock", cls: "bg-destructive/15 text-destructive" };
-  if (stock < 10) return { label: `Low · ${stock}`, cls: "bg-amber-500/15 text-amber-400" };
-  return { label: `In stock · ${stock}`, cls: "bg-primary/15 text-primary" };
+  if (stock < 10) return { label: `Low - ${stock}`, cls: "bg-amber-500/15 text-amber-400" };
+  return { label: `In stock - ${stock}`, cls: "bg-primary/15 text-primary" };
 };
 
 const syncBadge = (status?: string | null) => {
@@ -44,6 +44,13 @@ const syncBadge = (status?: string | null) => {
   };
 };
 
+const publishBadge = (approved?: boolean | null, status?: string | null) => {
+  if (status === "published") return { label: "Published", cls: "bg-emerald-500/15 text-emerald-500" };
+  if (status === "failed") return { label: "Publish failed", cls: "bg-destructive/15 text-destructive" };
+  if (approved) return { label: "Approved", cls: "bg-sky-500/15 text-sky-500" };
+  return { label: "Needs approval", cls: "bg-amber-500/15 text-amber-400" };
+};
+
 const AdminDashboard = () => {
   const items = useProductStore((s) => s.items);
   const loadFromSupabase = useProductStore((s) => s.loadFromSupabase);
@@ -57,6 +64,7 @@ const AdminDashboard = () => {
 
   const totalValue = items.reduce((s, p) => s + p.price * p.stock, 0);
   const syncedCount = items.filter((p) => p.shopifyProductId).length;
+  const approvedCount = items.filter((p) => p.approvedForShopify).length;
 
   return (
     <div className="space-y-8 animate-fade-in">
@@ -67,7 +75,7 @@ const AdminDashboard = () => {
             Hero products
           </h1>
           <p className="mt-1 text-sm text-muted-foreground">
-            Manage the curated catalog. Changes save to this browser.
+            Manage the curated catalog, Shopify sync state, and approval status.
           </p>
         </div>
         <Button asChild className="rounded-full">
@@ -77,11 +85,11 @@ const AdminDashboard = () => {
         </Button>
       </div>
 
-      <div className="grid gap-4 sm:grid-cols-3">
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <Stat label="Products" value={items.length.toString()} />
         <Stat label="Total units" value={items.reduce((s, p) => s + p.stock, 0).toString()} />
-        <Stat label="Inventory value" value={`$${totalValue.toLocaleString()}`} />
-        <Stat label="Shopify synced" value={`${syncedCount}/${items.length}`} />
+        <Stat label="Inventory value" value={`INR ${totalValue.toLocaleString()}`} />
+        <Stat label="Shopify ready" value={`${approvedCount}/${items.length} approved, ${syncedCount} synced`} />
       </div>
 
       <div className="overflow-hidden rounded-2xl border border-border/60 bg-card">
@@ -90,11 +98,3 @@ const AdminDashboard = () => {
           <span>Price</span>
           <span>Stock</span>
           <span>Shopify</span>
-          <span className="text-right">Actions</span>
-        </div>
-        <ul className="divide-y divide-border/60">
-          {items.length === 0 && (
-            <li className="px-5 py-10 text-center text-sm text-muted-foreground">
-              No products yet. Click “Add new product”.
-            </li>
-          )}
