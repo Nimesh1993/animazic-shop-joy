@@ -34,11 +34,16 @@ export const useProductStore = create<ProductStoreState>()(
       loading: false,
       loadFromSupabase: async () => {
         set({ loading: true });
-        const remoteProducts = await fetchSupabaseProducts();
-        set({
-          items: remoteProducts.map((p) => ({ ...p, stock: 25 })),
-          loading: false,
-        });
+        try {
+          const remoteProducts = await fetchSupabaseProducts();
+          set({
+            items: remoteProducts.map((p) => ({ ...p, stock: 25 })),
+            loading: false,
+          });
+        } catch (error) {
+          console.error("Failed to load   Supabase products", error);
+          set({ loading: false });
+        }
       },
       getBySlug: (slug) => get().items.find((p) => p.slug === slug),
       getById: (id) => get().items.find((p) => p.id === id),
@@ -70,6 +75,9 @@ export const useProductStore = create<ProductStoreState>()(
       name: "boutique-products",
       storage: createJSONStorage(() => localStorage),
       version: 2,
+      partialize: (state) => ({
+        items: state.items,
+      }),
     },
   ),
 );
