@@ -69,7 +69,7 @@ export const useProductStore = create<ProductStoreState>()(
     {
       name: "boutique-products",
       storage: createJSONStorage(() => localStorage),
-      version: 1,
+      version: 2,
     },
   ),
 );
