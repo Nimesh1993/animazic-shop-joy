@@ -137,10 +137,10 @@ const AdminDashboard = () => {
             { className: "px-5 py-10 text-center text-sm text-muted-foreground" },
             "No products found.",
           )
-: items.map((product) => {
-    const supplier = suppliersBySku[product.id];
+        : items.map((product) => {
+            const supplier = suppliersBySku[product.id];
 
-    return React.createElement(
+            return React.createElement(
               "div",
               {
                 key: product.id,
@@ -201,8 +201,8 @@ const AdminDashboard = () => {
                   "Delete",
                 ),
               ),
-            ),
-      }),
+            );
+          }),
     ),
   );
 };
