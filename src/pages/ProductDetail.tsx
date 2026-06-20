@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import { WARRANTY_PRICE } from "@/data/products";
+import { fetchSelectedSupplierSnapshots, SelectedSupplierSnapshot } from "@/data/supplierSnapshots";
 import { useProductStore } from "@/stores/productStore";
 import { useCartStore } from "@/stores/cartStore";
 import CompareButton from "@/components/store/CompareButton";
@@ -15,11 +16,25 @@ const ProductDetail = () => {
   const loading = useProductStore((s) => s.loading);
   const loadFromSupabase = useProductStore((s) => s.loadFromSupabase);
   const [warranty, setWarranty] = useState(false);
+  const [supplier, setSupplier] = useState<SelectedSupplierSnapshot | null>(null);
   const addItem = useCartStore((s) => s.addItem);
 
   useEffect(() => {
     loadFromSupabase();
   }, [loadFromSupabase]);
+
+  useEffect(() => {
+    let active = true;
+
+    fetchSelectedSupplierSnapshots().then((snapshots) => {
+      if (!active || !product) return;
+      setSupplier(snapshots[product.id] ?? null);
+    });
+
+    return () => {
+      active = false;
+    };
+  }, [product]);
 
   const total = useMemo(() => (product ? product.price + (warranty ? WARRANTY_PRICE : 0) : 0), [product, warranty]);
 
