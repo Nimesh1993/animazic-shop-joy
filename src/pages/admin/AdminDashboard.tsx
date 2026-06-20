@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { automationSupabase } from "@/integrations/supabase/automationClient";
 import { useProductStore } from "@/stores/productStore";
 import { toast } from "@/hooks/use-toast";
+import { fetchSelectedSupplierSnapshots, SelectedSupplierSnapshot } from "@/data/supplierSnapshots";
 
 const getPublishLabel = (product: { approvedForShopify?: boolean | null; shopifyPublishStatus?: string | null }) => {
   if (product.shopifyPublishStatus === "published") return "published";
@@ -16,11 +17,22 @@ const AdminDashboard = () => {
   const loadFromSupabase = useProductStore((s) => s.loadFromSupabase);
   const subscribeToSupabase = useProductStore((s) => s.subscribeToSupabase);
   const remove = useProductStore((s) => s.remove);
+  const [suppliersBySku, setSuppliersBySku] = React.useState<Record<string, SelectedSupplierSnapshot>>({});
 
+  const loadSuppliers = React.useCallback(async () => {
+    const suppliers = await fetchSelectedSupplierSnapshots();
+    setSuppliersBySku(suppliers);
+  }, []);
   React.useEffect(() => {
     loadFromSupabase();
-    return subscribeToSupabase();
-  }, [loadFromSupabase, subscribeToSupabase]);
+    loadSuppliers();
+
+    const unsubscribeProducts = subscribeToSupabase();
+
+    return () => {
+      unsubscribeProducts();
+    };
+  }, [loadFromSupabase, loadSuppliers, subscribeToSupabase]);
 
   const approveProduct = async (sku: string, name: string) => {
     const { error } = await automationSupabase
