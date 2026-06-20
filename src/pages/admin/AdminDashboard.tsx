@@ -158,6 +158,16 @@ const AdminDashboard = () => {
               React.createElement(
                 "div",
                 { className: "space-y-1 text-xs" },
+                React.createElement("p", null, getSupplierName(supplier)),
+                React.createElement("p", null, getSupplierQuality(supplier)),
+                React.createElement("p", null, getSupplierCost(supplier)),
+                supplier
+                  ? React.createElement(
+                      "p",
+                      null,
+                      `Dropship ready: ${supplier.dropshipReady ? "yes" : "no"} | Returns: ${supplier.returnPolicyDays} days`,
+                    )
+                  : null,
                 React.createElement("p", null, `Sync: ${product.shopifySyncStatus ?? "not synced"}`),
                 React.createElement("p", null, `Approval: ${getPublishLabel(product)}`),
                 product.shopifyPublishedAt
