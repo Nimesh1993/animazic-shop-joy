@@ -12,6 +12,21 @@ const getPublishLabel = (product: { approvedForShopify?: boolean | null; shopify
   return "needs approval";
 };
 
+const getSupplierName = (supplier?: SelectedSupplierSnapshot) => {
+  if (!supplier) return "Supplier: not loaded";
+  return `Supplier: ${supplier.supplierName}`;
+};
+
+const getSupplierQuality = (supplier?: SelectedSupplierSnapshot) => {
+  if (!supplier) return "Quality: n/a";
+  return `Quality: ${supplier.qualityScore.toFixed(2)} | Rating: ${supplier.supplierRating.toFixed(1)} | ${supplier.shipsFrom}`;
+};
+
+const getSupplierCost = (supplier?: SelectedSupplierSnapshot) => {
+  if (!supplier) return "Cost: n/a";
+  return `Landed cost: INR ${supplier.landedCost.toLocaleString()} | Lead: ${supplier.leadTimeDays} days`;
+};
+
 const AdminDashboard = () => {
   const items = useProductStore((s) => s.items);
   const loadFromSupabase = useProductStore((s) => s.loadFromSupabase);
