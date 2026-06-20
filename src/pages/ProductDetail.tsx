@@ -90,6 +90,50 @@ const ProductDetail = () => {
 
           <p className="mt-8 text-base leading-relaxed text-foreground/90">{product.description}</p>
 
+          {supplier && (
+            <div className="mt-8 rounded-2xl border border-border/60 bg-card p-5">
+              <p className="text-xs uppercase tracking-widest text-primary">Fulfillment Confidence</p>
+
+              <div className="mt-4 grid gap-3 text-sm sm:grid-cols-2">
+                <div>
+                  <p className="text-muted-foreground">Ships from</p>
+                  <p className="font-medium text-foreground">{supplier.shipsFrom}</p>
+                </div>
+
+                <div>
+                  <p className="text-muted-foreground">Estimated dispatch</p>
+                  <p className="font-medium text-foreground">{supplier.leadTimeDays} days</p>
+                </div>
+
+                <div>
+                  <p className="text-muted-foreground">Supplier rating</p>
+                  <p className="font-medium text-foreground">{supplier.supplierRating.toFixed(1)} / 5.0</p>
+                </div>
+
+                <div>
+                  <p className="text-muted-foreground">Quality score</p>
+                  <p className="font-medium text-foreground">{(supplier.qualityScore * 100).toFixed(0)}%</p>
+                </div>
+
+                <div>
+                  <p className="text-muted-foreground">Returns</p>
+                  <p className="font-medium text-foreground">{supplier.returnPolicyDays} days</p>
+                </div>
+
+                <div>
+                  <p className="text-muted-foreground">Fulfillment</p>
+                  <p className="font-medium text-foreground">
+                    {supplier.dropshipReady ? "Dropship-ready" : "Manual review"}
+                  </p>
+                </div>
+              </div>
+
+              <p className="mt-4 text-xs text-muted-foreground">
+                Supplier details are reviewed before approval. Final delivery time may vary by destination and carrier.
+              </p>
+            </div>
+          )}
+
           <ul className="mt-8 space-y-3">
             {product.highlights.map((h) => (
               <li key={h} className="flex items-start gap-3 text-sm">
